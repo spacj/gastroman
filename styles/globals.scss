@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  #scrolled-tab {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}
+
+a,
+nav li {
+  cursor: pointer;
+}
+.custom-card-effects {
+  transition: transform 0.48s;
+  backface-visibility: hidden;
+  --tsAmount: 3.75rem;
+  --scaleAmount: 1.09;
+  --rotateAmount: 360deg;
+  --perspective: 2250px;
+  transform: perspective(2600px) rotateY(0deg);
+
+  &.flip {
+    &-right {
+      transform: perspective(2600px) rotateY(-360deg);
+    }
+    &-left {
+      transform: perspective(2600px) rotateY(360deg);
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    &:not(&.active) button {
+      @apply lg:text-blue-700 lg:bg-white/20 lg:border-blue-700;
+    }
+
+    &.active {
+      button {
+        @apply hover:text-blue-700 hover:bg-primary-base/0 hover:border-blue-700;
+      }
+      &:first-child {
+        z-index: 10;
+      }
+
+      &.flip {
+        &:last-child {
+          transform: perspective(var(--perspective)) rotateY(0deg)
+            translateX(calc(var(--tsAmount) * -1)) scale(var(--scaleAmount));
+          &.flip-left {
+            transform: perspective(var(--perspective)) rotateY(360deg)
+              translateX(calc(var(--tsAmount) * -1)) scale(var(--scaleAmount));
+          }
+        }
+
+        &:first-child {
+          transform: perspective(var(--perspective)) rotateY(0deg)
+            translateX(var(--tsAmount)) scale(var(--scaleAmount));
+          &.flip-right {
+            transform: perspective(var(--perspective)) rotateY(-360deg)
+              translateX(var(--tsAmount)) scale(var(--scaleAmount));
+          }
+        }
+      }
+    }
+  }
+}
+
+.custom-hamburger-menu {
+  @apply relative flex-col transition-transform duration-300;
+  & > * {
+    @apply transition-transform duration-300;
+    transition-timing-function: ease-in-out;
+  }
+  // Active
+  &.active {
+    justify-content: center;
+    & > * {
+      position: absolute;
+      &:nth-child(2) {
+        opacity: 0;
+      }
+      // The first and 3rd child to be the shape-> X
+    }
+    & > * {
+      &:nth-child(1) {
+        transform: rotate(45deg);
+      }
+      &:nth-child(3) {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  // Active and Hovered
+  &.active:hover {
+    justify-content: center;
+    & > * {
+      &:nth-child(1) {
+        transform: rotate(60deg);
+      }
+      &:nth-child(3) {
+        transform: rotate(-60deg);
+      }
+    }
+  }
+  // Not Active And hovered
+  &:not(.active):hover {
+    > * {
+      &:nth-child(1) {
+        transform: rotate(10deg);
+      }
+      &:nth-child(3) {
+        transform: rotate(-10deg);
+      }
+    }
+  }
+}
+
+.container {
+  @apply grid grid-cols-12;
+  max-width: 100vw;
+}
+
+g,
+path {
+  fill: inherit;
+}
